@@ -32,7 +32,7 @@ conjunta <- function(xval, thval){
 # Marginal de x
 
 betabi <- function(x){
-  fx <- choose(n, x)/beta(a, b)*beta(x+a, n-x+b)
+  fx <-gamma(n+1)/(gamma(x+1)*gamma(n-x+1)*beta(a, b))*beta(x+a, n-x+b)
   return(fx)
 }
 
