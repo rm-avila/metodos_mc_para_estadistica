@@ -41,7 +41,6 @@ betabi <- function(x){
 df <-  data.frame(cbind(x, th)) %>% 
   setNames(c("x", "theta"))
 
-
 # Comparar simulaciones con distribuciones teóricas -----------------------
 
 df %>% 
