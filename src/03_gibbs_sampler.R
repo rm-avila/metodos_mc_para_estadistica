@@ -1,7 +1,6 @@
 rm(list = ls())
 source("lib/helpers.R")
 
-
 # Muestreador de Gibbs de la conjunta de binomial con previa Beta ----------
 
 # Inicializar valores
@@ -23,7 +22,6 @@ for(i in 2:nsim){
   th[i] <- rbeta(1, x[i]+a, n-x[i]+b)
 }
 
-
 # Programar una función con la conjunta -----------------------------------
 
 conjunta <- function(xval, thval){
@@ -44,14 +42,19 @@ df <-  data.frame(cbind(x, th)) %>%
 # Comparar simulaciones con distribuciones teóricas -----------------------
 
 df %>% 
-  gather(variable, value) %>% head
+  gather(variable, value) %>% 
   ggplot(aes(x = value, colour = variable, fill = variable)) +
   geom_histogram() +
   facet_wrap(~variable, scales = "free_x")
 
 par(mfrow = c(1, 2))
-hist(df$x, freq = F, breaks = 20)
-points(0:14, betabi(0:14), col = "blue", pch = 16)
 
-hist(df$theta, freq = F)
-curve(dbeta(x, shape1 = a, shape2 = b), col = "blue", add = T)
+# Marginal de x
+range_x <- sort(unique(x))
+hist(df$x, freq = F, breaks = c(range_x, max(x)+1)-0.5, main = "Marginal de x")
+lines(range_x, betabi(range_x), col = "blue", pch = 16, lwd = 2)
+points(range_x, betabi(range_x), col = "blue", pch = 16)
+
+# Marginal de theta
+hist(df$theta, freq = F, main = "Marginal de theta")
+curve(dbeta(x, shape1 = a, shape2 = b), col = "blue", add = T, lwd = 2)
